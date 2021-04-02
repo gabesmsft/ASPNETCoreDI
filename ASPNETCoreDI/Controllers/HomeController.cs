@@ -17,17 +17,21 @@ namespace ASPNETCoreDI.Controllers
 
         private readonly IConfiguration _configuration;
 
-        private readonly IMyDependency1 _myDependency;
+        private readonly IMyDependency1 _myDependency1;
+
+        private readonly IMyDependency2 _myDependency2;
 
         //The dependencies get injected into this client class' constructor
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IMyDependency1 myDependency)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IMyDependency1 myDependency1, IMyDependency2 myDependency2)
         {
             _logger = logger;
 
             _configuration = configuration;
 
-            _myDependency = myDependency;
+            _myDependency1 = myDependency1;
+
+            _myDependency2 = myDependency2;
         }
         public IActionResult Index()
         {
@@ -37,7 +41,10 @@ namespace ASPNETCoreDI.Controllers
 
             _logger.LogInformation("FakeAppSettingValue: " + fakeAppSetting);
 
-            _logger.LogInformation("MyDependendy.TestDependencyInjection() return value: " + _myDependency.TestDependencyInjection());
+            //if the following prints "MyDependency1 successfully injected", we know MyDependency1 was sucessfully injected because this message was passed into the constructor during registration
+            _logger.LogInformation("MyDependendy.TestDependencyInjection() return value: " + _myDependency1.TestDependencyInjection());
+
+            _myDependency2.DoSomeLogging();
 
             return View();
         }
